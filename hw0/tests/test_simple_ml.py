@@ -1,7 +1,7 @@
 import numpy as np
 import sys
+sys.path.append("./hw0/src")
 import numdifftools as nd
-sys.path.append("./src")
 import mugrade
 from simple_ml import *
 try:

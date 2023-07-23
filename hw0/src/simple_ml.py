@@ -1,10 +1,7 @@
 import struct
 import numpy as np
 import gzip
-try:
-    from simple_ml_ext import *
-except:
-    pass
+import simple_ml_ext
 
 
 def add(x, y):
@@ -20,7 +17,7 @@ def add(x, y):
         Sum of x + y
     """
     ### BEGIN YOUR CODE
-    pass
+    return x + y
     ### END YOUR CODE
 
 
@@ -139,7 +136,7 @@ def train_softmax(X_tr, y_tr, X_te, y_te, epochs=10, lr=0.5, batch=100,
         if not cpp:
             softmax_regression_epoch(X_tr, y_tr, theta, lr=lr, batch=batch)
         else:
-            softmax_regression_epoch_cpp(X_tr, y_tr, theta, lr=lr, batch=batch)
+            simple_ml_ext.softmax_regression_epoch_cpp(X_tr, y_tr, theta, lr=lr, batch=batch)
         train_loss, train_err = loss_err(X_tr @ theta, y_tr)
         test_loss, test_err = loss_err(X_te @ theta, y_te)
         print("|  {:>4} |    {:.5f} |   {:.5f} |   {:.5f} |  {:.5f} |"\
