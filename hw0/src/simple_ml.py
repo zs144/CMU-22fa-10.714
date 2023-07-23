@@ -45,7 +45,7 @@ def parse_mnist(image_filename, label_filename):
                 for MNIST will contain the values 0-9.
     """
     ### BEGIN YOUR CODE
-    # I found this StackOverflow post to be very helpful for this task.
+    # NOTE: I found this StackOverflow post to be very helpful for this task.
     # https://stackoverflow.com/questions/39969045/parsing-yann-lecuns-mnist-idx-file-format
     MAX_PIXEL_VALUE = 255.0
 
@@ -83,10 +83,15 @@ def softmax_loss(Z, y):
             containing the true label of each example.
 
     Returns:
-        Average softmax loss over the sample.
+        loss (float): Average softmax loss over the sample.
     """
     ### BEGIN YOUR CODE
-    pass
+    # NOTE: What is the logit? Check this StackOverflow discussion:
+    # https://datascience.stackexchange.com/questions/31041/what-does-logits-in-machine-learning-mean
+    n_samples = y.shape[0]
+    true_class_logits = Z[np.arange(n_samples), y]
+    loss = np.average(np.log(np.sum(np.exp(Z), axis=1)) - true_class_logits)
+    return loss
     ### END YOUR CODE
 
 
