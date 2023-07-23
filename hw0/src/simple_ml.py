@@ -31,12 +31,12 @@ def parse_mnist(image_filename, label_filename):
 
     Returns:
         Tuple (X,y):
-            X (numpy.ndarray[np.float32]): 2D numpy array containing the loaded 
-                data.  The dimensionality of the data should be 
-                (num_examples x input_dim) where 'input_dim' is the full 
-                dimension of the data, e.g., since MNIST images are 28x28, it 
-                will be 784.  Values should be of type np.float32, and the data 
-                should be normalized to have a minimum value of 0.0 and a 
+            X (numpy.ndarray[np.float32]): 2D numpy array containing the loaded
+                data.  The dimensionality of the data should be
+                (num_examples x input_dim) where 'input_dim' is the full
+                dimension of the data, e.g., since MNIST images are 28x28, it
+                will be 784.  Values should be of type np.float32, and the data
+                should be normalized to have a minimum value of 0.0 and a
                 maximum value of 1.0. The normalization should be applied uniformly
                 across the whole dataset, _not_ individual images.
 
@@ -45,7 +45,28 @@ def parse_mnist(image_filename, label_filename):
                 for MNIST will contain the values 0-9.
     """
     ### BEGIN YOUR CODE
-    pass
+    # I found this StackOverflow post to be very helpful for this task.
+    # https://stackoverflow.com/questions/39969045/parsing-yann-lecuns-mnist-idx-file-format
+    MAX_PIXEL_VALUE = 255.0
+
+    image_file = gzip.open(image_filename, 'rb')
+    with image_file as f:
+        _, size = struct.unpack(">II", f.read(8))
+        nrows, ncols = struct.unpack(">II", f.read(8))
+        image_data = np.frombuffer(f.read(), dtype=np.dtype(np.uint8).newbyteorder('>'))
+        X = image_data.reshape((size, nrows*ncols))
+        X = X.astype(np.float32) / MAX_PIXEL_VALUE
+    image_file.close()
+    print(X.shape)
+
+    label_file = gzip.open(label_filename, 'rb')
+    with label_file as f:
+        _, size = struct.unpack(">II", f.read(8))
+        label_data = np.frombuffer(f.read(), dtype=np.dtype(np.uint8).newbyteorder('>'))
+        y = label_data.reshape(size)
+    label_file.close()
+
+    return X, y
     ### END YOUR CODE
 
 
